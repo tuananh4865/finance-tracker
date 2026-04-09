@@ -8,6 +8,7 @@ const navItems = [
   { href: "/transactions", label: "Transactions", icon: "💳" },
   { href: "/categories", label: "Categories", icon: "🏷️" },
   { href: "/budgets", label: "Budgets", icon: "📈" },
+  { href: "/recurring", label: "Recurring", icon: "🔄" },
 ];
 
 export default function Navbar() {

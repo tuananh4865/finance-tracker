@@ -30,6 +30,7 @@ model Category {
   icon        String        @default("📦")
   transactions Transaction[]
   budgets     Budget[]
+  recurring   RecurringTransaction[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
@@ -52,6 +53,7 @@ model RecurringTransaction {
   amount      Float
   description String
   categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
   frequency   String   // "daily" | "weekly" | "monthly" | "yearly"
   startDate   DateTime
   nextRun     DateTime
