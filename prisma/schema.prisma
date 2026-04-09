@@ -29,6 +29,7 @@ model Category {
   color       String        @default("#6366f1")
   icon        String        @default("📦")
   transactions Transaction[]
+  budgets     Budget[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
@@ -36,6 +37,7 @@ model Category {
 model Budget {
   id          String   @id @default(cuid())
   categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
   amount      Float
   period      String   // "monthly" | "weekly" | "yearly"
   startDate   DateTime
