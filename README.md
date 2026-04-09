@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Personal Finance Tracker
+
+A web app to track personal finances — income, expenses, budgets, and visualizations.
+
+## Features
+
+- **Dashboard** — Balance overview, income/expense summary, category breakdown
+- **Transactions** — List with filters by type, category, and date range
+- **Categories** — Create, edit, and delete categories with custom colors and icons
+- **Budgets** — Set spending limits per category with progress tracking
+- **Recurring** — Schedule recurring transactions with automatic next-run calculation
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Database**: SQLite via Prisma ORM
+- **Styling**: Inline CSS (no external dependencies)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Set up database
+npx prisma db push
+
+# Seed with sample data
+npx prisma db seed
+
+# Start dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── dashboard/route.ts
+│   │   ├── transactions/route.ts
+│   │   ├── categories/route.ts
+│   │   ├── categories/[id]/route.ts
+│   │   ├── budgets/route.ts
+│   │   └── recurring/route.ts
+│   ├── page.tsx              # Dashboard
+│   ├── transactions/page.tsx
+│   ├── categories/page.tsx
+│   ├── budgets/page.tsx
+│   └── recurring/page.tsx
+├── components/
+│   └── Navbar.tsx
+└── lib/
+    └── prisma.ts
+```
 
-## Learn More
+## Database Schema
 
-To learn more about Next.js, take a look at the following resources:
+- **Transaction** — Individual income/expense records
+- **Category** — Labels with color and icon
+- **Budget** — Spending limits per category/period
+- **RecurringTransaction** — Scheduled recurring items
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Endpoints
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/dashboard` | Balance, income, expenses, category breakdown |
+| GET | `/api/transactions` | List with filters (type, category, date) |
+| POST | `/api/transactions` | Create transaction |
+| GET | `/api/categories` | List all categories |
+| POST | `/api/categories` | Create category |
+| PUT | `/api/categories/[id]` | Update category |
+| DELETE | `/api/categories/[id]` | Delete category |
+| GET | `/api/budgets` | List budgets with current spending |
+| POST | `/api/budgets` | Create budget |
+| GET | `/api/recurring` | List recurring transactions |
+| POST | `/api/recurring` | Create recurring transaction |
