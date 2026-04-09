@@ -9,11 +9,13 @@ A web app to track personal finances — income, expenses, budgets, and visualiz
 - **Categories** — Create, edit, and delete categories with custom colors and icons
 - **Budgets** — Set spending limits per category with progress tracking
 - **Recurring** — Schedule recurring transactions with automatic next-run calculation
+- **Sentry** — Error tracking and performance monitoring (when configured)
 
 ## Tech Stack
 
 - **Framework**: Next.js 16 (App Router)
 - **Database**: SQLite via Prisma ORM
+- **Monitoring**: Sentry (optional)
 - **Styling**: Inline CSS (no external dependencies)
 
 ## Getting Started
