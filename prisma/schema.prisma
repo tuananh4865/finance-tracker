@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  type        String   // "income" | "expense"
+  amount      Float
+  description String
+  date        DateTime
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Category {
+  id          String        @id @default(cuid())
+  name        String        @unique
+  type        String        // "income" | "expense" | "both"
+  color       String        @default("#6366f1")
+  icon        String        @default("📦")
+  transactions Transaction[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Budget {
+  id          String   @id @default(cuid())
+  categoryId  String?
+  amount      Float
+  period      String   // "monthly" | "weekly" | "yearly"
+  startDate   DateTime
+  endDate     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model RecurringTransaction {
+  id          String   @id @default(cuid())
+  type        String   // "income" | "expense"
+  amount      Float
+  description String
+  categoryId  String?
+  frequency   String   // "daily" | "weekly" | "monthly" | "yearly"
+  startDate   DateTime
+  nextRun     DateTime
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
