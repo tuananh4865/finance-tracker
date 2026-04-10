@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: "📊" },
@@ -13,6 +14,11 @@ const navItems = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: "/login" });
+  };
 
   return (
     <nav
@@ -28,6 +34,7 @@ export default function Navbar() {
           gap: "2rem",
           maxWidth: "1200px",
           margin: "0 auto",
+          alignItems: "center",
         }}
       >
         {navItems.map((item) => {
@@ -52,6 +59,43 @@ export default function Navbar() {
             </Link>
           );
         })}
+        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "1rem" }}>
+          {session?.user && (
+            <span style={{ color: "#6b7280", fontSize: "0.875rem" }}>
+              {session.user.name || session.user.email}
+            </span>
+          )}
+          {session?.user ? (
+            <button
+              onClick={handleSignOut}
+              style={{
+                padding: "0.5rem 1rem",
+                background: "#ef4444",
+                color: "white",
+                border: "none",
+                borderRadius: "0.375rem",
+                cursor: "pointer",
+                fontSize: "0.875rem",
+              }}
+            >
+              Sign out
+            </button>
+          ) : (
+            <Link
+              href="/login"
+              style={{
+                padding: "0.5rem 1rem",
+                background: "#6366f1",
+                color: "white",
+                borderRadius: "0.375rem",
+                textDecoration: "none",
+                fontSize: "0.875rem",
+              }}
+            >
+              Sign in
+            </Link>
+          )}
+        </div>
       </div>
     </nav>
   );

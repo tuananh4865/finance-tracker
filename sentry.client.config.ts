@@ -6,9 +6,6 @@ Sentry.init({
   // Set tracesSampleRate to control how many transactions are captured
   tracesSampleRate: 1.0,
 
-  // Enable always capture for debugging
-  captureFailedRequests: true,
-
   // Environment
   environment: process.env.NODE_ENV,
 });
