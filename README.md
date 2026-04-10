@@ -15,16 +15,59 @@ A web app to track personal finances — income, expenses, budgets, and visualiz
 
 - **Framework**: Next.js 16 (App Router)
 - **Database**: SQLite via Prisma ORM
+- **Persistence**: Turso/libSQL (for Vercel deployment)
 - **Monitoring**: Sentry (optional)
 - **Styling**: Inline CSS (no external dependencies)
 
-## Getting Started
+## Deployment to Vercel
+
+The app uses Turso (libSQL) for persistent database on Vercel. Local development uses SQLite.
+
+### Setup Turso Database
+
+1. Install Turso CLI:
+   ```bash
+   curl -sSfL https://get.tur.so/install.sh | bash
+   ```
+
+2. Create database:
+   ```bash
+   turso db create financetracker --group finance-tracker
+   ```
+
+3. Get database URL:
+   ```bash
+   turso db show financetracker --url
+   ```
+
+4. Get auth token:
+   ```bash
+   turso auth api-tokens mint my-token
+   ```
+
+### Configure Environment Variables
+
+**Vercel Project Settings → Environment Variables:**
+- `TURSO_DATABASE_URL` = your Turso database URL
+- `TURSO_AUTH_TOKEN` = your Turso auth token
+- `AUTH_SECRET` = generate with `openssl rand -base64 32`
+- `NEXTAUTH_URL` = https://your-app.vercel.app
+
+### Push Schema to Turso
+
+```bash
+export TURSO_DATABASE_URL="libsql://your-db.turso.io"
+export TURSO_AUTH_TOKEN="your-token"
+npx prisma db push
+```
+
+## Getting Started (Local Development)
 
 ```bash
 # Install dependencies
 npm install
 
-# Set up database
+# Set up database (SQLite for local)
 npx prisma db push
 
 # Seed with sample data
@@ -81,3 +124,8 @@ src/
 | POST | `/api/budgets` | Create budget |
 | GET | `/api/recurring` | List recurring transactions |
 | POST | `/api/recurring` | Create recurring transaction |
+
+## Related Concepts
+
+- [[database]] — Database architecture and schema design
+- [[ci-cd]] — CI/CD pipeline for the finance tracker
